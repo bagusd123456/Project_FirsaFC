@@ -62,6 +62,8 @@ public class BasePlayerController : MonoBehaviour
         }
 
         _isMoving = false;
+        _rb.freezeRotation = false;
+
     }
 
     //Check if collider with movingPlatform
