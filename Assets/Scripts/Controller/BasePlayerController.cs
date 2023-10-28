@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class BasePlayerController : MonoBehaviour
@@ -14,10 +15,25 @@ public class BasePlayerController : MonoBehaviour
     private Transform platformBody;
     private Vector3 lastPlatformPosition;
 
+    public LayerMask WhatIsGround;
+    public AnimationCurve animCurve;
+
+    public float time;
+
+    public float yOffset;
+
+    public InputAction playerInputAction;
+    private Vector2 movementInput = Vector2.zero;
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
     }
 
     // Update is called once per frame
@@ -30,12 +46,23 @@ public class BasePlayerController : MonoBehaviour
             lastPlatformPosition = platformBody.position;
         }
 
+        Quaternion targetRotation = Quaternion.Euler(Mathf.RoundToInt(transform.rotation.eulerAngles.x / 90) * 90,
+            Mathf.RoundToInt(transform.rotation.eulerAngles.y / 90) * 90,
+            Mathf.RoundToInt(transform.rotation.eulerAngles.z / 90) * 90);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation,
+            animCurve.Evaluate(time));
+
         if (_isMoving) return;
 
-        if (Input.GetKeyDown(KeyCode.A)) Assemble(Vector3.left);
-        if (Input.GetKeyDown(KeyCode.D)) Assemble(Vector3.right);
-        if (Input.GetKeyDown(KeyCode.W)) Assemble(Vector3.forward);
-        if (Input.GetKeyDown(KeyCode.S)) Assemble(Vector3.back);
+        //if (Input.GetKeyDown(KeyCode.A)) Assemble(Vector3.left);
+        //if (Input.GetKeyDown(KeyCode.D)) Assemble(Vector3.right);
+        //if (Input.GetKeyDown(KeyCode.W)) Assemble(Vector3.forward);
+        //if (Input.GetKeyDown(KeyCode.S)) Assemble(Vector3.back);
+
+        if(movementInput.x > 0.5f) Assemble(Vector3.right);
+        if(movementInput.x < -0.5f) Assemble(Vector3.left);
+        if(movementInput.y > 0.5f) Assemble(Vector3.forward);
+        if(movementInput.y < -0.5f) Assemble(Vector3.back);
 
         void Assemble(Vector3 dir)
         {
@@ -44,9 +71,12 @@ public class BasePlayerController : MonoBehaviour
             StartCoroutine(Roll(anchor, axis));
         }
 
-        
-        //rb.MovePosition(q * (rb.transform.position - target.position) + target.position);
-        
+        // Keep at specific height above terrain
+        //pos = transform.position;
+        //float terrainHeight = Terrain.activeTerrain.SampleHeight(pos);
+        //transform.position = new Vector3(pos.x,
+        //    terrainHeight + hoverHeight,
+        //    pos.z);
     }
 
     IEnumerator Roll(Vector3 anchor, Vector3 axis)
@@ -63,7 +93,21 @@ public class BasePlayerController : MonoBehaviour
 
         _isMoving = false;
         _rb.freezeRotation = false;
+        
+        //ClampRotation();
+    }
 
+    [ContextMenu("ClampRotation")]
+    public void ClampRotation()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        RaycastHit info = new RaycastHit();
+
+        if (Physics.Raycast(ray, out info, WhatIsGround))
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(Vector3.up, info.normal),
+                animCurve.Evaluate(time));
+        }
     }
 
     //Check if collider with movingPlatform
@@ -85,5 +129,18 @@ public class BasePlayerController : MonoBehaviour
             _isOnPlatform = false;
             platformBody = null;
         }
+    }
+
+    private float SurfaceRotation()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        RaycastHit info = new RaycastHit();
+        float angle = 0;
+        if (Physics.Raycast(ray, out info, WhatIsGround))
+        {
+            angle = Vector3.Angle(transform.up, info.normal);
+        }
+
+        return angle;
     }
 }
