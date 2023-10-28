@@ -6,17 +6,9 @@ public class FinishLineScript : MonoBehaviour
 {
     public GameObject finishUI;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // Detects Player Object when crossing the finish line/collider trigger
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
