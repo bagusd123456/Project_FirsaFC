@@ -140,7 +140,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Deep_Water_Color: {r: 0, g: 0.76198196, b: 1, a: 0.53333336}
+    - _Deep_Water_Color: {r: 0, g: 0.76198196, b: 1, a: 0.28235295}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Foam_Color: {r: 1.9999998, g: 1.9999998, b: 1.9999998, a: 0.8666667}
     - _Shallow_Water_Color: {r: 0, g: 0.38132906, b: 0.46226418, a: 0.5882353}
