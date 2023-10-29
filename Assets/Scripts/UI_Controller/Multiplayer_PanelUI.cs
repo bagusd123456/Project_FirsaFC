@@ -50,6 +50,6 @@ public class Multiplayer_PanelUI : MonoBehaviour
     public void StartGameMultiplayer()
     {
         PlayerManager.Instance.playerCount = PlayerManager.Instance.playerDevices.Count;
-        SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene("Level 1 Multiplayer");
     }
 }

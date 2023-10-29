@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour
 
     public List<PlayerInput> players = new List<PlayerInput>();
     public List<InputDevice> playerDevices = new List<InputDevice>();
+    public List<PlayerInput> spawnedPlayerList = new List<PlayerInput>();
 
     [SerializeField] private List<Transform> startingPoints;
 
@@ -162,7 +163,7 @@ public class PlayerManager : MonoBehaviour
 
     public void SpawnPlayer(Scene arg0, LoadSceneMode arg1)
     {
-        var spawnedPlayerList = new List<PlayerInput>();
+        spawnedPlayerList = new List<PlayerInput>();
         for (int i = spawnedPlayerList.Count; i < playerCount; i++)
         {
             //var GO = Instantiate(playerPrefab);
