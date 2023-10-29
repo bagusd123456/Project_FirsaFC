@@ -117,7 +117,14 @@ public class BasePlayerController : MonoBehaviour
             isDead = true;
             PlayDeadAnimation();
             Debug.Log("You Dead");
-            UIScript.instance.PlayerLose();
+
+            if(GameManager.Instance != null)
+                GameManager.Instance.CheckLoseCondition();
+            else
+            {
+                UIScript.instance.PlayerLose();
+            }
+
             GetComponent<Animator>().SetBool("playerLose", true);
         }
 
