@@ -20,7 +20,8 @@ public class BasePlayerController : MonoBehaviour
 
     public float time;
 
-    public float yOffset;
+    public bool canMove = true;
+    public bool isDead = false;
 
     public InputAction playerInputAction;
     private Vector2 movementInput = Vector2.zero;
@@ -34,6 +35,17 @@ public class BasePlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+
+        if (canMove && !_isMoving && !isDead)
+        {
+            if (movementInput.x > 0.5f) Assemble(Vector3.right);
+            if (movementInput.x < -0.5f) Assemble(Vector3.left);
+            if (movementInput.y > 0.5f) Assemble(Vector3.forward);
+            if (movementInput.y < -0.5f) Assemble(Vector3.back);
+        }
+
+        canMove = context.action.triggered && movementInput == Vector2.zero;
+        //canMove = context.action.triggered && (movementInput.x == 0 || movementInput.y == 0);
     }
 
     // Update is called once per frame
@@ -52,31 +64,23 @@ public class BasePlayerController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation,
             animCurve.Evaluate(time));
 
-        if (_isMoving) return;
+        //if (_isMoving) return;
 
-        //if (Input.GetKeyDown(KeyCode.A)) Assemble(Vector3.left);
-        //if (Input.GetKeyDown(KeyCode.D)) Assemble(Vector3.right);
-        //if (Input.GetKeyDown(KeyCode.W)) Assemble(Vector3.forward);
-        //if (Input.GetKeyDown(KeyCode.S)) Assemble(Vector3.back);
+        //if (canMove)
+        //{
+        //    if (movementInput.x > 0.5f) Assemble(Vector3.right);
+        //    if (movementInput.x < -0.5f) Assemble(Vector3.left);
+        //    if (movementInput.y > 0.5f) Assemble(Vector3.forward);
+        //    if (movementInput.y < -0.5f) Assemble(Vector3.back);
+        //}
+    }
 
-        if(movementInput.x > 0.5f) Assemble(Vector3.right);
-        if(movementInput.x < -0.5f) Assemble(Vector3.left);
-        if(movementInput.y > 0.5f) Assemble(Vector3.forward);
-        if(movementInput.y < -0.5f) Assemble(Vector3.back);
-
-        void Assemble(Vector3 dir)
-        {
-            var anchor = transform.position + (Vector3.down + dir) * 0.5f * transform.localScale.x;
-            var axis = Vector3.Cross(Vector3.up, dir);
-            StartCoroutine(Roll(anchor, axis));
-        }
-
-        // Keep at specific height above terrain
-        //pos = transform.position;
-        //float terrainHeight = Terrain.activeTerrain.SampleHeight(pos);
-        //transform.position = new Vector3(pos.x,
-        //    terrainHeight + hoverHeight,
-        //    pos.z);
+    void Assemble(Vector3 dir)
+    {
+        canMove = false;
+        var anchor = transform.position + (Vector3.down + dir) * 0.5f * transform.localScale.x;
+        var axis = Vector3.Cross(Vector3.up, dir);
+        StartCoroutine(Roll(anchor, axis));
     }
 
     IEnumerator Roll(Vector3 anchor, Vector3 axis)
@@ -84,17 +88,24 @@ public class BasePlayerController : MonoBehaviour
         _isMoving = true;
         for (int i = 0; i < (90 / _rollSpeed); i++)
         {
-            //Quaternion q = Quaternion.AngleAxis(_rollSpeed, transform.forward);
-            //_rb.MoveRotation(_rb.transform.rotation * q);
             transform.RotateAround(anchor, axis, _rollSpeed);
             _rb.freezeRotation = true;
             yield return new WaitForSeconds(0.01f);
+            
+        }
+        _rb.freezeRotation = false;
+        _isMoving = false;
+
+        if (GetSurfaceObject().CompareTag("DeadCollider"))
+        {
+            isDead = true;
+            Debug.Log("You Dead");
         }
 
-        _isMoving = false;
-        _rb.freezeRotation = false;
-        
-        //ClampRotation();
+        if (movementInput == Vector2.zero)
+        {
+            canMove = true;
+        }
     }
 
     [ContextMenu("ClampRotation")]
@@ -142,5 +153,19 @@ public class BasePlayerController : MonoBehaviour
         }
 
         return angle;
+    }
+
+    public GameObject GetSurfaceObject()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        RaycastHit info = new RaycastHit();
+        GameObject GO = null;
+
+        if (Physics.Raycast(ray, out info, WhatIsGround))
+        {
+            GO = info.collider.gameObject;
+        }
+
+        return GO;
     }
 }
