@@ -14,6 +14,8 @@ Material:
   - _HALFTONESHAPE_DOT
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
+  - _OUTLINE
+  - _TOON_SHADING_ON
   m_InvalidKeywords:
   - _METALLICGLOSSMAP
   m_LightmapFlags: 4
@@ -141,14 +143,14 @@ Material:
     - _HairSpecularSize: 0.8
     - _HairSpecularSmoothness: 0.1
     - _HalfToneDiffuseStep: 0
-    - _HalfToneEnabled: 0
+    - _HalfToneEnabled: 1
     - _HalfToneIncludeReceivedShadow: 0
     - _HalfToneShape: 0
     - _HalfToneUvMode: 0
     - _HalftoneFadeDistance: 10
     - _HalftoneFadeToColor: 0
     - _HalftoneNoiseClip: 0.8
-    - _HalftoneTilling: 8
+    - _HalftoneTilling: 7.64
     - _HatchingDensity: 1
     - _HatchingDiffuseOffset: 0
     - _HatchingDrawStrength: 1
@@ -160,9 +162,9 @@ Material:
     - _NoiseScale: 1
     - _NoiseStrength: 0.1
     - _OcclusionStrength: 1
-    - _OutlineEnabled: 0
+    - _OutlineEnabled: 1
     - _OutlineMode: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 2.81
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -186,7 +188,7 @@ Material:
     - _StepViaRampTexture: 0
     - _Surface: 0
     - _ToonBlending: 1
-    - _ToonEnabled: 0
+    - _ToonEnabled: 1
     - _UVSec: 0
     - _UseRampColor: 0
     - _WorkflowMode: 1

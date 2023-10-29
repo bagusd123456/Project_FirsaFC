@@ -131,7 +131,7 @@ Material:
     - _Texture_Speed_Y: 0
     - _Use_Waves: 1
     - _WaterDepthFadeDistance: 1.44
-    - _Water_Depth_Fade_Distance: 3
+    - _Water_Depth_Fade_Distance: 16
     - _Wave_Height: 0.91
     - _Wave_Scale: 0.164
     - _Wave_Speed: 0.105
@@ -140,10 +140,10 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Deep_Water_Color: {r: 0, g: 0.76198196, b: 1, a: 0.28235295}
+    - _Deep_Water_Color: {r: 0.024919916, g: 0.58095574, b: 0.754717, a: 0.68235296}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Foam_Color: {r: 1.9999998, g: 1.9999998, b: 1.9999998, a: 0.8666667}
-    - _Shallow_Water_Color: {r: 0, g: 0.38132906, b: 0.46226418, a: 0.5882353}
+    - _Shallow_Water_Color: {r: 0.09549664, g: 0.5892066, b: 0.6981132, a: 0.5882353}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Texture_Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
