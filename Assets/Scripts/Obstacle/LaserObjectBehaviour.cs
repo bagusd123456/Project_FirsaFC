@@ -11,6 +11,7 @@ public class LaserObjectBehaviour : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
     }
 
     private void FixedUpdate()
@@ -31,6 +32,12 @@ public class LaserObjectBehaviour : MonoBehaviour
         {
             timeToStop = true;
             rb.isKinematic = true;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            other.gameObject.SetActive(false);
+            PauseScreenScript.instance.LoseScreenUI.SetActive(true);
         }
     }
 }

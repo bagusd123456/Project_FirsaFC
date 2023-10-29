@@ -5,6 +5,19 @@ using UnityEngine;
 public class PauseScreenScript : MonoBehaviour
 {
     public GameObject PauseScreenUI;
+    public GameObject LoseScreenUI;
+    public static PauseScreenScript instance;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        } else
+        {
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()

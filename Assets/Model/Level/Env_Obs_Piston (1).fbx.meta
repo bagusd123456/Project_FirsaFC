@@ -3,7 +3,17 @@ guid: a3ec5ca3f390222478367b74aee52309
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gear
+    second: {fileID: 2100000, guid: ff6e0e2dee546a642a141f873141d502, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_EnvObs_Piston
+    second: {fileID: 2100000, guid: 41ad413c6d9025a4ca85936e82bf7a95, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
