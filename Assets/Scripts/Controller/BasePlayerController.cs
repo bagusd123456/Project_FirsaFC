@@ -101,7 +101,8 @@ public class BasePlayerController : MonoBehaviour
         {
             isDead = true;
             Debug.Log("You Dead");
-            PauseScreenScript.instance.PlayerLose();
+            UIScript.instance.PlayerLose();
+            GetComponent<Animator>().SetBool("playerLose", true);
         }
 
         if (movementInput == Vector2.zero)

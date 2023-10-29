@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PauseScreenScript : MonoBehaviour
+public class UIScript : MonoBehaviour
 {
     public GameObject PauseScreenUI;
     public GameObject LoseScreenUI;
-    public static PauseScreenScript instance;
+    public static UIScript instance;
 
     private void Awake()
     {
@@ -44,5 +45,10 @@ public class PauseScreenScript : MonoBehaviour
     public void PlayerLose()
     {
         LoseScreenUI.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
