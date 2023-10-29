@@ -39,6 +39,10 @@ public class PauseScreenScript : MonoBehaviour
                 PauseScreenUI.SetActive(true);
                 Time.timeScale = 0;
             }
-                
+    }
+
+    public void PlayerLose()
+    {
+        LoseScreenUI.SetActive(true);
     }
 }

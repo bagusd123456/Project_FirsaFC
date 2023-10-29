@@ -37,7 +37,7 @@ public class LaserObjectBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.gameObject.SetActive(false);
-            PauseScreenScript.instance.LoseScreenUI.SetActive(true);
+            PauseScreenScript.instance.PlayerLose();
         }
     }
 }

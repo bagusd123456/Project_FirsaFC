@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6842198027763681469}
   - component: {fileID: 6842198027763681468}
   - component: {fileID: 6842198027763681443}
+  - component: {fileID: 426367782}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -212,7 +213,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   time: 0.25
-  yOffset: 0
+  canMove: 1
+  isDead: 0
   playerInputAction:
     m_Name: Player Input
     m_Type: 0
@@ -251,6 +253,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &426367782
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6842198027763681471}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 761836afe6fb900489f75bf89c8913b3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &4514465210059944274
 PrefabInstance:
   m_ObjectHideFlags: 0

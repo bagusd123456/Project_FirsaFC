@@ -96,10 +96,12 @@ public class BasePlayerController : MonoBehaviour
         _rb.freezeRotation = false;
         _isMoving = false;
 
+        // CHECK IF PLAYER IS ON TOP OF PLATFORM OR WATER
         if (GetSurfaceObject().CompareTag("DeadCollider"))
         {
             isDead = true;
             Debug.Log("You Dead");
+            PauseScreenScript.instance.PlayerLose();
         }
 
         if (movementInput == Vector2.zero)
