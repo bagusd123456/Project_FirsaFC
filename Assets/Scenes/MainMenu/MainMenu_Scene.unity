@@ -847,9 +847,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 48445554}
-        m_TargetAssemblyTypeName: MainMenu_PanelUI, Assembly-CSharp
-        m_MethodName: StartGameSinglePlayer
+      - m_Target: {fileID: 50230644}
+        m_TargetAssemblyTypeName: Multiplayer_PanelUI, Assembly-CSharp
+        m_MethodName: StartGameMultiplayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
