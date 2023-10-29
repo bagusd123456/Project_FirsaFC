@@ -51,4 +51,10 @@ public class UIScript : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("MainMenu_Scene");
+
+    }
 }
