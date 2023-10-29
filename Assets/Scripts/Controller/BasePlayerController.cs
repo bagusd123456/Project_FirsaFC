@@ -85,9 +85,10 @@ public class BasePlayerController : MonoBehaviour
         {
             if (GO.CompareTag("Collider"))
             {
+                Debug.Log("Play Stumble Animation");
+
                 animator.SetTrigger("Stumble");
                 PlayJumpAnimation();
-                Debug.Log("Play Stumble Animation");
                 return;
             }
         }
@@ -239,7 +240,7 @@ public class BasePlayerController : MonoBehaviour
         float startPosition = transform.position.y;
 
         var tween = transform.DOMoveY(endPosition, 0.1f).SetEase(Ease.InSine);
-        var tween2 = transform.DOMoveY(endPosition, 0.1f).SetEase(Ease.OutSine);
+        var tween2 = transform.DOMoveY(startPosition, 0.1f).SetEase(Ease.OutSine);
         mySequence.Append(tween);
         mySequence.Append(tween2);
     }
