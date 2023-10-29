@@ -47,11 +47,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        if (Multiplayer_PanelUI.Instance.gameObject.activeSelf)
-        {
-            Multiplayer_PanelUI.Instance.playerInputs = players;
-            Multiplayer_PanelUI.Instance.UpdateText();
-        }
+        //Multiplayer_PanelUI.Instance.playerInputs = players;
+        //Multiplayer_PanelUI.Instance.UpdateText();
     }
 
     //private void InputOnChange(object arg1, InputActionChange arg2)

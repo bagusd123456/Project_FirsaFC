@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioSettings audioSettings;
     public static AudioManager Instance { get; private set; }
     public static Action<AudioClip> OnPlaySFX;
 
@@ -35,6 +36,11 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
         }
+    }
+
+    private void Start()
+    {
+        AssignSettingsFromData();
     }
 
     private void OnEnable()
@@ -89,6 +95,63 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public float GetMasterVolume()
+    {
+        audioMixer.GetFloat("masterVolume", out float value);
+        return value;
+        //return audioMixer.GetFloat("masterVolume", out float value) ? value : 0;
+    }
+
+    public float GetMusicVolume()
+    {
+        audioMixer.GetFloat("bgmVolume", out float value);
+        return value;
+    }
+
+    public float GetSFXVolume()
+    {
+        audioMixer.GetFloat("sfxVolume", out float value);
+        return value;
+    }
+
+    public void SaveSettingsToJSON()
+    {
+        var data = new AudioSettings
+        {
+            masterVolume = GetMasterVolume(),
+            musicVolume = GetMusicVolume(),
+            sfxVolume = GetSFXVolume()
+        };
+
+        string json = JsonUtility.ToJson(data, true);
+        PlayerPrefs.SetString("AudioSettings", json);
+    }
+
+    public AudioSettings LoadSettingsFromJSON()
+    {
+        var defaultData = new AudioSettings()
+        {
+            masterVolume = 0.5f,
+            musicVolume = 0.5f,
+            sfxVolume = 0.5f
+        };
+
+        string defaultDataJSON = JsonUtility.ToJson(defaultData, true);
+        var data = JsonUtility.FromJson<AudioSettings>(PlayerPrefs.GetString("AudioSettings", defaultDataJSON));
+
+        return data;
+    }
+
+    public void AssignSettingsFromData()
+    {
+        float master = LoadSettingsFromJSON().masterVolume;
+        float bgm = LoadSettingsFromJSON().musicVolume;
+        float sfx = LoadSettingsFromJSON().sfxVolume;
+        audioMixer.SetFloat("bgmVolume", master);
+        audioMixer.SetFloat("bgmVolume", bgm);
+        audioMixer.SetFloat("sfxVolume", sfx);
+    }
+
     /// <summary>
     /// I don't know what this is for.
     /// </summary>
@@ -96,4 +159,11 @@ public class AudioManager : MonoBehaviour
     {
         AudioManager.OnPlaySFX?.Invoke(audioTarget[Random.Range(0, audioTarget.Length)]);
     }
+}
+
+public class AudioSettings
+{
+    public float masterVolume;
+    public float musicVolume;
+    public float sfxVolume;
 }

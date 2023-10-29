@@ -47,9 +47,9 @@ public class Multiplayer_PanelUI : MonoBehaviour
         GO.SetActive(!GO.activeSelf);
     }
 
-    public void StartGame()
+    public void StartGameMultiplayer()
     {
         PlayerManager.Instance.playerCount = PlayerManager.Instance.playerDevices.Count;
-        SceneManager.LoadScene("Gameplay_Test");
+        SceneManager.LoadScene("Level 1");
     }
 }

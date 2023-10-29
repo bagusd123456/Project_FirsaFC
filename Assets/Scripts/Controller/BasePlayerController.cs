@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 public class BasePlayerController : MonoBehaviour
 {
+    public float rayDistance = 1f;
     public Rigidbody _rb;
     [SerializeField] private float _rollSpeed = 5f;
     private bool _isMoving;
@@ -26,6 +28,7 @@ public class BasePlayerController : MonoBehaviour
     public InputAction playerInputAction;
     private Vector2 movementInput = Vector2.zero;
 
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -77,6 +80,18 @@ public class BasePlayerController : MonoBehaviour
 
     void Assemble(Vector3 dir)
     {
+        var GO = GetObjectAround(dir);
+        if (GO != null)
+        {
+            if (GO.CompareTag("Collider"))
+            {
+                animator.SetTrigger("Stumble");
+                PlayJumpAnimation();
+                Debug.Log("Play Stumble Animation");
+                return;
+            }
+        }
+
         canMove = false;
         var anchor = transform.position + (Vector3.down + dir) * 0.5f * transform.localScale.x;
         var axis = Vector3.Cross(Vector3.up, dir);
@@ -100,6 +115,7 @@ public class BasePlayerController : MonoBehaviour
         if (GetSurfaceObject().CompareTag("DeadCollider"))
         {
             isDead = true;
+            PlayDeadAnimation();
             Debug.Log("You Dead");
             UIScript.instance.PlayerLose();
             GetComponent<Animator>().SetBool("playerLose", true);
@@ -171,4 +187,65 @@ public class BasePlayerController : MonoBehaviour
 
         return GO;
     }
+
+    public GameObject GetObjectAround(Vector3 direction)
+    {
+        GameObject GO = null;
+        Ray ray = new Ray(transform.position, direction);
+        RaycastHit info = new RaycastHit();
+
+        if (Physics.Raycast(ray, out info, rayDistance, WhatIsGround))
+        {
+            GO = info.collider.gameObject;
+        }
+
+        return GO;
+    }
+
+    [ContextMenu("PlayDeadAnimation")]
+    public void PlayDeadAnimation()
+    {
+        var mySequence = DOTween.Sequence();
+        float endPosition = transform.position.y + 4;
+        float endScale = transform.localScale.x + 1.2f;
+        float startScale = transform.localScale.x;
+
+        var tween = transform.DOMoveY(endPosition, 0.5f).SetEase(Ease.InOutSine).SetDelay(0.05f);
+        //test.OnStart(() => { transform.DOScale(endScale, 0.5f); });
+        //test.OnComplete(() => { transform.DOScale(startScale, 0.5f); });
+        var tween2 = transform.DOMoveY(endPosition - 8, 0.25f).SetEase(Ease.OutFlash);
+
+        mySequence.Append(tween);
+
+        mySequence.Append(transform.DOScaleY(.6f, .2f));
+        mySequence.Insert(.5f, transform.DOScaleX(1.2f, .2f));
+        mySequence.Insert(.5f, transform.DOScaleZ(1.2f, .2f));
+
+        mySequence.Append(tween2);
+    }
+
+    [ContextMenu("PlayJumpAnimation")]
+    public void PlayJumpAnimation()
+    {
+        var mySequence = DOTween.Sequence();
+        float endPosition = transform.position.y + 0.5f;
+        float startPosition = transform.position.y;
+
+        var tween = transform.DOMoveY(endPosition, 0.1f).SetEase(Ease.InSine);
+        var tween2 = transform.DOMoveY(endPosition, 0.1f).SetEase(Ease.OutSine);
+        mySequence.Append(tween);
+        mySequence.Append(tween2);
+    }
+
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector3.left * rayDistance);
+        Gizmos.DrawRay(transform.position, Vector3.right * rayDistance);
+        Gizmos.DrawRay(transform.position, Vector3.forward * rayDistance);
+        Gizmos.DrawRay(transform.position, Vector3.back * rayDistance);
+    }
+#endif
 }
